@@ -1,0 +1,8 @@
+<ol class="breadcrumb" n:if="$nodes->count() > 1" n:inner-foreach="$nodes as $node">
+	<li n:class="$iterator->isLast() ? active">
+		<a n:tag-if="!$iterator->isLast()" href="{$presenter->link($node->getLink(), $node->getArgs())}">
+			<i n:tag-if="$iterator->isFirst() && $icon" class="{$icon}"></i>
+			{$node->getTitle()|translate}
+		</a>
+	</li>
+</ol>

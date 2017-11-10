@@ -1,0 +1,17 @@
+<!-- Info box - With progress -->
+<div n:class="'info-box', $background && $progress ? 'bg-' . $background">
+	<span n:if="$icon" n:class="'info-box-icon', $background && !$progress ? 'bg-' . $background">
+		<i class="fa fa-{$icon}"></i>
+	</span>
+
+	<div class="info-box-content">
+		<span class="info-box-text">{$text}</span>
+		<span class="info-box-number">{$value|number:2:',':' '}</span>
+
+		<div n:if="$progress" class="progress">
+			<div class="progress-bar" style="width: {$progress}%"></div>
+		</div>
+		<span n:if="$hint" class="progress-description">{$hint}</span>
+	</div>
+	<!-- /.info-box-content -->
+</div>

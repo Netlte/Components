@@ -1,0 +1,12 @@
+<div n:class="'small-box', $background ? 'bg-' . $background">
+	<div class="inner">
+		<h3>{$header}</h3>
+		<p>{$text}</p>
+	</div>
+	<div n:if="$icon" class="icon">
+		<i class="ion ion-{$icon}"></i>
+	</div>
+	<a n:if="$link" href="{$link}" class="small-box-footer">
+		{_'small_box.more_info'}
+		<i class="fa fa-arrow-circle-right"></i></a>
+</div>
