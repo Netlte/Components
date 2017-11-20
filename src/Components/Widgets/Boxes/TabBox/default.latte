@@ -1,0 +1,13 @@
+<div class="nav-tabs-custom">
+	<ul class="nav nav-tabs" n:inner-foreach="$tabs as $tab">
+		<li n:class="$iterator->isFirst() ? 'active'">
+			<a href="#{$tab->getName()}" data-toggle="tab">{$tab->getLabel()}</a>
+		</li>
+	</ul>
+	<div class="tab-content" n:inner-foreach="$tabs as $tab">
+		<div n:class="'tab-pane', $iterator->isFirst() ? 'active'" id="{$tab->getName()}">
+			{control $tab}
+		</div>
+	</div>
+	<!-- /.tab-content -->
+</div>
