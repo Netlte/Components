@@ -3,7 +3,7 @@
 
 namespace Netlte\Components\Widgets\Boxes\TabBox;
 
-use Holabs\UI\BaseControl;
+use AsIS\UI\Containers\BaseContainer;
 use Nette\Localization\ITranslator;
 
 
@@ -12,7 +12,7 @@ use Nette\Localization\ITranslator;
  * @package      netlte/components
  * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
  */
-class Tab extends BaseControl implements ITab {
+class Tab extends BaseContainer implements ITab {
 
 	/** @var string */
 	private $label;
@@ -23,7 +23,7 @@ class Tab extends BaseControl implements ITab {
 	 * @param ITranslator|null $translator
 	 */
 	public function __construct(string $label, ITranslator $translator = NULL) {
-		parent::__construct($translator);
+		parent::__construct(NULL, ['translator' => $translator]);
 		$this->label = $label;
 	}
 
