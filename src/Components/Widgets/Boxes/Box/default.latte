@@ -1,8 +1,13 @@
 <div n:class="'box', $background ? 'box-' . $background, $isSolid ? 'box-solid', $isCollabsed ? 'collapsed-box'">
-	<div n:class="'box-header', $hasBorder ? 'with-border'">
-		<h3 class="box-title">{$title}</h3>
+	<div n:if="$title || $hasTools" n:class="'box-header', $hasBorder ? 'with-border'">
+		<h3 n:if="$title" class="box-title">{$title}</h3>
 
-		<div class="box-tools pull-right" n:if="$isCollabsable || $isRemovable">
+		<div class="box-tools pull-right" n:if="$hasTools">
+			{foreach $tools as $name => $tool}
+				<a n:href="tool! tool => $name" n:class="$tool->isAjaxEnabled() ? 'ajax', 'btn', 'btn-box-tool'">
+					<i n:class="'fa', 'fa-' . $tool->getIcon(), $tool->getColor() ? 'text-' . $tool->getColor()"></i>
+				</a>
+			{/foreach}
 			<button n:if="$isCollabsable" type="button" class="btn btn-box-tool" data-widget="collapse">
 				<i n:class="'fa', $isCollabsed ? 'fa-plus' : 'fa-minus'"></i>
 			</button>

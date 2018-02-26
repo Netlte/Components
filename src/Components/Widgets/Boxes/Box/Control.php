@@ -3,7 +3,9 @@
 
 namespace Netlte\Components\Widgets\Boxes\Box;
 
+use Holabs\Utils\ArrayHash;
 use Netlte\Components\Widgets\BaseWidget;
+use Nette\Application\BadRequestException;
 use Nette\Localization\ITranslator;
 
 
@@ -27,6 +29,9 @@ class Control extends BaseWidget {
 	/** @var string */
 	private $background = self::DEFAULT_BACKGROUND;
 
+	/** @var Tool[]|ArrayHash */
+	private $tools;
+
 	/** @var bool */
 	private $solid = TRUE;
 
@@ -48,11 +53,13 @@ class Control extends BaseWidget {
 	public function __construct(ITranslator $translator = NULL) {
 		parent::__construct($translator);
 		$this->setTemplateFile(self::$DEFAULT_TEMPLATE);
+		$this->tools = new ArrayHash();
 	}
 
 	public function render() {
 
 		$this->getTemplate()->title = $this->getTitle();
+		$this->getTemplate()->tools = $this->getTools();
 		$this->getTemplate()->background = $this->getBackground();
 		$this->getTemplate()->isSolid = $this->isSolid();
 		$this->getTemplate()->isCollabsable = $this->isCollabsable();
@@ -60,10 +67,24 @@ class Control extends BaseWidget {
 		$this->getTemplate()->isRemovable = $this->isRemovable();
 		$this->getTemplate()->hasOverlay = $this->hasOverlay();
 		$this->getTemplate()->hasBorder = $this->hasBorder();
+		$this->getTemplate()->hasTools = $this->hasTools();
 		$this->getTemplate()->components = $this->getComponents();
 
 		parent::render();
 		$this->getTemplate()->render();
+	}
+
+	/**
+	 * @param string $tool
+	 * @throws BadRequestException
+	 */
+	public function handleTool(string $tool) {
+		$t = $this->getTool($tool);
+		if ($t === NULL) {
+			throw new BadRequestException("Tool with name {$tool} not found");
+		}
+
+		$t->invokeClick();
 	}
 
 	/**
@@ -92,6 +113,51 @@ class Control extends BaseWidget {
 	 */
 	public function hasBorder(): bool {
 		return $this->border;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasTools(): bool {
+		return (bool) $this->getTools()->count() || $this->isCollabsable() || $this->isRemovable();
+	}
+
+	/**
+	 * @return ArrayHash|Tool[]
+	 */
+	public function getTools() {
+		return $this->tools;
+	}
+
+	/**
+	 * @param string $name
+	 * @return Tool|null
+	 */
+	public function getTool(string $name): ?Tool {
+		return $this->getTools()->offsetGetExists($name);
+	}
+
+	/**
+	 * @param string $name
+	 * @return Control
+	 */
+	public function removeTool(string $name): self {
+		if ($this->getTools()->offsetExists($name)) {
+			$this->getTools()->offsetUnset($name);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param string $name
+	 * @param string $icon
+	 * @return Tool
+	 */
+	public function addTool(string $name, string $icon) {
+		$tool = new Tool($icon);
+		$this->getTools()->offsetSet($name, $tool);
+		return $tool;
 	}
 
 	/**
