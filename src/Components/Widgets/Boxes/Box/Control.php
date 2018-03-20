@@ -48,6 +48,9 @@ class Control extends BaseWidget {
 	private $overlay = FALSE;
 
 	/** @var bool */
+	private $padding = TRUE;
+
+	/** @var bool */
 	private $border = TRUE;
 
 	public function __construct(ITranslator $translator = NULL) {
@@ -106,6 +109,13 @@ class Control extends BaseWidget {
 	 */
 	public function isCollabsable(): bool {
 		return $this->collabsable;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasPadding(): bool {
+		return $this->padding;
 	}
 
 	/**
@@ -218,6 +228,16 @@ class Control extends BaseWidget {
 	 */
 	public function setCollabsable(bool $collabsable = TRUE): Control {
 		$this->collabsable = $collabsable;
+
+		return $this;
+	}
+
+	/**
+	 * @param bool $padding
+	 * @return Control
+	 */
+	public function setPadding(bool $padding = TRUE): Control {
+		$this->padding = $padding;
 
 		return $this;
 	}
