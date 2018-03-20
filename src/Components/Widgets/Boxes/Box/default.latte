@@ -18,7 +18,7 @@
 		<!-- /.box-tools -->
 	</div>
 	<!-- /.box-header -->
-	<div class="box-body" n:inner-foreach="$components as $component">
+	<div n:class="'box-body', !$hasPadding ? 'no-padding'" n:inner-foreach="$components as $component">
 		{control $component}
 	</div>
 	<!-- /.box-body -->

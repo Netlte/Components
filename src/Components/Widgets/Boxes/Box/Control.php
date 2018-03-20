@@ -69,6 +69,7 @@ class Control extends BaseWidget {
 		$this->getTemplate()->isCollabsed = $this->isCollabsed();
 		$this->getTemplate()->isRemovable = $this->isRemovable();
 		$this->getTemplate()->hasOverlay = $this->hasOverlay();
+		$this->getTemplate()->hasPadding = $this->hasPadding();
 		$this->getTemplate()->hasBorder = $this->hasBorder();
 		$this->getTemplate()->hasTools = $this->hasTools();
 		$this->getTemplate()->components = $this->getComponents();
