@@ -6,7 +6,7 @@
 {/snippet}
 <div class="nav-tabs-custom">
 	<ul class="nav nav-tabs" n:inner-foreach="$tabs as $tab">
-		<li n:class="$iterator->isFirst() ? 'active'">
+		<li n:class="($iterator->isFirst() && $active === NULL) || $active === $tab->getName() ? 'active'">
 			<a href="#{$tab->getName()}" data-toggle="tab">{$tab->getLabel()}</a>
 		</li>
 	</ul>

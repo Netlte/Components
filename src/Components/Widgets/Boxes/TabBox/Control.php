@@ -19,6 +19,9 @@ class Control extends BaseWidget {
 	/** @var string */
 	public static $DEFAULT_TEMPLATE = self::DEFAULT_TEMPLATE;
 
+	/** @var string|null */
+	private $active = NULL;
+
 	/**
 	 * @param ITranslator|NULL $translator
 	 */
@@ -29,6 +32,7 @@ class Control extends BaseWidget {
 
 	public function render() {
 		$this->getTemplate()->tabs = $this->getComponents(FALSE, ITab::class);
+		$this->getTemplate()->active = $this->active;
 
 		parent::render();
 		$this->getTemplate()->render();
@@ -60,6 +64,23 @@ class Control extends BaseWidget {
 		}
 
 		return $tab;
+	}
+
+	/**
+	 * @param string|NULL $name
+	 * @return Control
+	 */
+	public function setActiveTab(string $name = NULL): Control {
+		if ($name === NULL) {
+			$this->active = NULL;
+			return $this;
+		}
+
+		// check if component exist - throws
+		$this->getComponent($name);
+
+		$this->active = $name;
+		return $this;
 	}
 
 }
