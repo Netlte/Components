@@ -1,8 +1,19 @@
-<div n:if="$boxes->count()" class="row dashboard-boxes">
-	<div n:foreach="$boxes as $box" class="col-lg-3 col-xs-6">
-		{control $box}
+{snippet flashes}
+	<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		{$flash->message}
 	</div>
-</div>
-<div n:if="$widgets->count()" class="row dashboard-widgets" n:inner-foreach="$widgets as $widget">
-	{control $widget}
-</div>
+{/snippet}
+
+{snippet boxes}
+	<div n:if="$boxes->count()" class="row dashboard-boxes">
+		<div n:foreach="$boxes as $box" class="col-lg-3 col-xs-6">
+			{control $box}
+		</div>
+	</div>
+{/snippet}
+{snippet widgets}
+	<div n:if="$widgets->count()" class="row dashboard-widgets" n:inner-foreach="$widgets as $widget">
+		{control $widget}
+	</div>
+{/snippet}
