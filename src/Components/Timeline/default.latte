@@ -1,0 +1,32 @@
+{snippet flashes}
+	<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		{$flash->message}
+	</div>
+{/snippet}
+
+<ul n:snippet="content" class="timeline" n:inner-foreach="$control->getComponents() as $entry">
+
+	{var $last = $iterator->isFirst() ? NULL : $last}
+	{var $colors = ['blue', 'aqua', 'yellow', 'purple', 'maroon']}
+	{php shuffle($colors)}
+
+	<li n:if="$iterator->isFirst()">
+		<i class="fa fa-clock-o bg-gray"></i>
+	</li>
+	<li n:if="$iterator->isFirst()"></li>
+	<li n:if="$iterator->isFirst()"></li>
+
+	<li n:if="$chapters && $last !== $entry->getDatetime()->format('Y-m-d')" class="time-label">
+		{var $last = $entry->getDatetime()->format('Y-m-d')}
+		<span class="bg-{$colors[array_rand($colors)]}">
+				{$entry->getDatetime()->format('d. m. Y')}
+			</span>
+	</li>
+
+	<li>
+		{control $entry}
+	</li>
+
+
+</ul>
