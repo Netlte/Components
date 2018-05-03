@@ -11,12 +11,6 @@
 	{var $colors = ['blue', 'aqua', 'yellow', 'purple', 'maroon']}
 	{php shuffle($colors)}
 
-	<li n:if="$iterator->isFirst()">
-		<i class="fa fa-clock-o bg-gray"></i>
-	</li>
-	<li n:if="$iterator->isFirst()"></li>
-	<li n:if="$iterator->isFirst()"></li>
-
 	<li n:if="$chapters && $last !== $entry->getDatetime()->format('Y-m-d')" class="time-label">
 		{var $last = $entry->getDatetime()->format('Y-m-d')}
 		<span class="bg-{$colors[array_rand($colors)]}">
@@ -26,6 +20,10 @@
 
 	<li>
 		{control $entry}
+	</li>
+
+	<li n:if="$iterator->isLast()">
+		<i class="fa fa-clock-o bg-gray"></i>
 	</li>
 
 
