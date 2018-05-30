@@ -20,6 +20,9 @@ class Control extends BaseBox {
 	public static $DEFAULT_TEMPLATE = self::DEFAULT_TEMPLATE;
 
 	/** @var string */
+	public static $ICON_PREFIX = "ion ion-";
+
+	/** @var string */
 	private $header = '';
 
 	/** @var string|null */
@@ -50,6 +53,7 @@ class Control extends BaseBox {
 
 	public function render() {
 		parent::render();
+		$this->getTemplate()->icon_prefix = self::$ICON_PREFIX;
 		$this->getTemplate()->header = $this->getHeader();
 		$this->getTemplate()->link = $this->getLink() !== NULL ? $this->getPresenter()->link($this->getLink()) : NULL;
 		$this->getTemplate()->render();
