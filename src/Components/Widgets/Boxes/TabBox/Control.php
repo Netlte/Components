@@ -19,8 +19,8 @@ class Control extends BaseWidget {
 	/** @var string */
 	public static $DEFAULT_TEMPLATE = self::DEFAULT_TEMPLATE;
 
-	/** @var string|null */
-	private $active = NULL;
+	/** @var string|null @persistent */
+	public $active = NULL;
 
 	/**
 	 * @param ITranslator|NULL $translator

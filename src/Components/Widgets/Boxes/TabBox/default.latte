@@ -11,7 +11,7 @@
 		</li>
 	</ul>
 	<div class="tab-content" n:inner-foreach="$tabs as $tab">
-		<div n:class="'tab-pane', $iterator->isFirst() ? 'active'" id="{$tab->getName()}">
+		<div n:class="'tab-pane', ($iterator->isFirst() && $active === NULL) || $active === $tab->getName() ? 'active'" id="{$tab->getName()}">
 			{control $tab}
 		</div>
 	</div>
