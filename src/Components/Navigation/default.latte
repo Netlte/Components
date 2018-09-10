@@ -1,5 +1,12 @@
 <ul class="sidebar-menu" data-widget="tree" n:inner-foreach="$sections as $section">
-	<li n:if="$section->getCaption()" class="header">{$section->getCaption()|translate}</li>
+	{var $renderSection = FALSE}
+
+	{foreach $section->getItems() as $tmp}
+		{var $renderSection = $tmp->isRenderingAllowed()}
+		{breakIf $renderSection}
+	{/foreach}
+
+	<li n:if="$section->getCaption() && $renderSection" class="header">{$section->getCaption()|translate}</li>
 	{var $item = $section}
 	{block item}
 		<li n:foreach="$item->getItems() as $subitem" n:if="$subitem->isRenderingAllowed()" n:class="$subitem->isTreeView() ? 'treeview', $subitem->isActive() ? 'active', !$subitem->getLink() ? 'bg-danger'">
