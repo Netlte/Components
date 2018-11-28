@@ -28,6 +28,9 @@ class Control extends BaseBox {
 	/** @var string|null */
 	private $link = NULL;
 
+	/** @var bool */
+	private $smaller = FALSE;
+
 	/**
 	 * Control constructor.
 	 * @param string           $text
@@ -56,6 +59,7 @@ class Control extends BaseBox {
 		$this->getTemplate()->icon_prefix = self::$ICON_PREFIX;
 		$this->getTemplate()->header = $this->getHeader();
 		$this->getTemplate()->link = $this->getLink() !== NULL ? $this->getPresenter()->link($this->getLink()) : NULL;
+		$this->getTemplate()->isSmaller = $this->isSmaller();
 		$this->getTemplate()->render();
 	}
 
@@ -89,6 +93,23 @@ class Control extends BaseBox {
 	 */
 	public function setLink(string $link = NULL): self {
 		$this->link = $link;
+
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isSmaller(): bool {
+		return $this->smaller;
+	}
+
+	/**
+	 * @param bool $smaller
+	 * @return Control
+	 */
+	public function setSmaller(bool $smaller = TRUE): self {
+		$this->smaller = $smaller;
 
 		return $this;
 	}
