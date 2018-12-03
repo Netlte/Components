@@ -1,0 +1,23 @@
+{
+  "name": "netlte/components",
+  "description": "Components for Netlte",
+  "homepage": "https://nette.org",
+  "type": "project",
+  "license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+  "authors": [
+	{
+	  "name": "Tomáš Holan",
+	  "homepage": "https://tomasholan.eu"
+	}
+  ],
+  "require": {
+	"php": ">=7.1",
+	"nette/application": "^3.0"
+  },
+  "minimum-stability": "dev",
+  "config": {
+	"platform": {
+	  "php": "7.1"
+	}
+  }
+}
