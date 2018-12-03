@@ -1,8 +1,7 @@
 {
   "name": "netlte/components",
   "description": "Components for Netlte",
-  "homepage": "https://nette.org",
-  "type": "project",
+  "homepage": "https://github.com/Netlte/Components",
   "license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
   "authors": [
 	{
