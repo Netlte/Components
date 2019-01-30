@@ -3,14 +3,13 @@
 
 namespace Netlte\Components\BreadCrumbs;
 
-use Holabs\UI\BaseControl;
-use Nette\Localization\ITranslator;
+use Netlte\Utils\UI\BaseControl;
 
 
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 class Control extends BaseControl {
 
@@ -30,46 +29,29 @@ class Control extends BaseControl {
 	/** @var string|null */
 	private $icon = 'dashboard';
 
-	/**
-	 * Control constructor.
-	 * @param Bread|IBreadCrumb[] $nodes
-	 * @param ITranslator|null    $translator
-	 */
-	public function __construct(Bread $nodes, ITranslator $translator = NULL) {
-		parent::__construct($translator);
+	public function __construct(Bread $nodes) {
 		$this->setTemplateFile(self::$DEFAULT_TEMPLATE);
 		$this->nodes = $nodes;
 	}
 
-	public function render() {
+	public function render(): void {
 		$this->getTemplate()->nodes = $this->getNodes();
-		$this->getTemplate()->icon = $this->getIcon() ? self::$ICON_PREFIX . $this->getIcon() : NULL;
+		$this->getTemplate()->icon = $this->getIcon() ? self::$ICON_PREFIX . $this->getIcon() : null;
 		$this->getTemplate()->setTranslator($this->getTranslator());
 		$this->getTemplate()->setFile($this->getTemplateFile());
 		$this->getTemplate()->render();
 	}
 
-	/**
-	 * @return string|null
-	 */
 	public function getIcon(): ?string {
 		return $this->icon;
 	}
 
-	/**
-	 * @param string|null $icon
-	 * @return Control
-	 */
-	public function setIcon(string $icon = NULL): self {
+	public function setIcon(string $icon = null): self {
 		$this->icon = $icon;
-
 		return $this;
 	}
 
-	/**
-	 * @return Bread|IBreadCrumb[]
-	 */
-	protected function getNodes() {
+	protected function getNodes(): Bread {
 		return clone $this->nodes;
 	}
 

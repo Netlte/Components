@@ -4,13 +4,12 @@
 namespace Netlte\Components\Widgets\Boxes\TabBox;
 
 use Netlte\Components\Widgets\BaseWidget;
-use Nette\Localization\ITranslator;
 
 
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 class Control extends BaseWidget {
 
@@ -20,64 +19,35 @@ class Control extends BaseWidget {
 	public static $DEFAULT_TEMPLATE = self::DEFAULT_TEMPLATE;
 
 	/** @var string|null @persistent */
-	public $active = NULL;
+	public $active = null;
 
-	/**
-	 * @param ITranslator|NULL $translator
-	 */
-	public function __construct(ITranslator $translator = NULL) {
-		parent::__construct($translator);
+	public function __construct() {
 		$this->setTemplateFile(self::$DEFAULT_TEMPLATE);
 	}
 
-	public function render() {
-		$this->getTemplate()->tabs = $this->getComponents(FALSE, ITab::class);
-		$this->getTemplate()->active = $this->active;
-
+	public function render(): void {
 		parent::render();
+		$this->getTemplate()->tabs = $this->getComponents(false, ITab::class);
+		$this->getTemplate()->active = $this->active;
 		$this->getTemplate()->render();
 	}
 
-	/**
-	 * @param string      $name
-	 * @param string      $label
-	 * @param string|null $insertBefore
-	 * @return Tab
-	 */
-	public function addTab(string $name, string $label, string $insertBefore = NULL): Tab {
+	public function addTab(string $name, string $label, string $insertBefore = null): Tab {
 		$tab = new Tab($label, $this->getTranslator());
-
 		$this->addComponent($tab, $name, $insertBefore);
-
 		return $tab;
 	}
 
-	/**
-	 * @param string $name
-	 * @return ITab|null
-	 */
 	public function getTab(string $name): ?ITab {
 		$tab = $this->getComponent($name);
-
-		if (!$tab instanceof ITab) {
-			return NULL;
-		}
-
-		return $tab;
+		return $tab instanceof ITab ? $tab : null;
 	}
 
-	/**
-	 * @param string|NULL $name
-	 * @return Control
-	 */
-	public function setActiveTab(string $name = NULL): Control {
-		if ($name === NULL) {
-			$this->active = NULL;
-			return $this;
+	public function setActiveTab(string $name = null): self {
+		if ($name !== null) {
+			// throw exception if Tab not exists
+			$this->getComponent($name);
 		}
-
-		// check if component exist - throws
-		$this->getComponent($name);
 
 		$this->active = $name;
 		return $this;

@@ -11,7 +11,7 @@
   ],
   "require": {
 	"php": ">=7.1",
-	"holabs/ui": "^1.0"
+	"netlte/utils": "dev-master"
   },
   "minimum-stability": "dev",
   "config": {

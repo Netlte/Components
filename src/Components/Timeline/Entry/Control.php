@@ -3,20 +3,16 @@
 
 namespace Netlte\Components\Timeline\Entry;
 
-use AsIS\Exceptions\InvalidArgumentException;
-use AsIS\Exceptions\InvalidStateException;
 use DateTime;
-use Holabs\UI\BaseControl;
-use Nette\ComponentModel\Container;
-use Nette\ComponentModel\IComponent;
-use Nette\Localization\ITranslator;
+use Netlte\Exceptions\InvalidArgumentException;
+use Netlte\Utils\UI\BaseControl;
 use Nette\Utils\Html;
 
 
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 class Control extends BaseControl {
 
@@ -40,22 +36,16 @@ class Control extends BaseControl {
 	private $color = 'blue';
 
 	/** @var Html|string|null */
-	private $title = NULL;
+	private $title = null;
 
-
-	/**
-	 * Control constructor.
-	 * @param ITranslator|null $translator
-	 * @param DateTime         $datetime
-	 */
-	public function __construct(ITranslator $translator = NULL, \DateTime $datetime) {
-		parent::__construct($translator);
+	
+	public function __construct(\DateTime $datetime) {
 		$this->setTemplateFile(self::$DEFAULT_TEMPLATE);
 
 		$this->datetime = $datetime;
 	}
 
-	public function render() {
+	public function render(): void {
 		$this->getTemplate()->datetime = $this->getDatetime();
 		$this->getTemplate()->icon = $this->getIcon();
 		$this->getTemplate()->color = $this->getColor();
@@ -67,54 +57,30 @@ class Control extends BaseControl {
 		$this->getTemplate()->render();
 	}
 
-	/**
-	 * @return DateTime
-	 */
 	public function getDatetime(): DateTime {
 		return $this->datetime;
 	}
 
-	/**
-	 * @param DateTime $datetime
-	 * @return Control
-	 */
-	public function setDatetime(DateTime $datetime): Control {
+	public function setDatetime(DateTime $datetime): self {
 		$this->datetime = $datetime;
-
 		return $this;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getIcon(): string {
 		return $this->icon;
 	}
 
-	/**
-	 * @param string $icon
-	 * @return Control
-	 */
-	public function setIcon(string $icon): Control {
+	public function setIcon(string $icon): self {
 		$this->icon = $icon;
-
 		return $this;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getColor(): string {
 		return $this->color;
 	}
 
-	/**
-	 * @param string $color
-	 * @return Control
-	 */
-	public function setColor(string $color): Control {
+	public function setColor(string $color): self {
 		$this->color = $color;
-
 		return $this;
 	}
 
@@ -127,18 +93,18 @@ class Control extends BaseControl {
 
 	/**
 	 * @param Html|null|string $title
-	 * @return Control
 	 */
-	public function setTitle($title) {
-		if ($title instanceof Html || $title === NULL) {
+	public function setTitle($title): self {
+		if ($title instanceof Html || $title === null) {
 			$this->title = $title;
 		} elseif (is_scalar($title)) {
 			$this->title = (string) $title;
 		} else {
 			throw new InvalidArgumentException(
 				sprintf(
-					'Method %s expect Argument 1 as NULL, scalar or \Nette\Utils\Html, %s given.',
+					'Method %s expect Argument 1 as NULL, scalar or %s, %s given.',
 					__METHOD__,
+					Html::class,
 					is_object($title) ? get_class($title) : gettype($title)
 				)
 			);

@@ -3,19 +3,18 @@
 
 namespace Netlte\Components\Timeline;
 
-use AsIS\Exceptions\InvalidStateException;
 use DateTime;
-use Holabs\UI\BaseControl;
 use Netlte\Components\Timeline\Entry\Control as Entry;
+use Netlte\Exceptions\InvalidStateException;
+use Netlte\Utils\UI\BaseControl;
 use Nette\ComponentModel\IComponent;
-use Nette\Localization\ITranslator;
 use Nette\Utils\Html;
 
 
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 class Control extends BaseControl {
 
@@ -25,19 +24,14 @@ class Control extends BaseControl {
 	public static $DEFAULT_TEMPLATE = self::DEFAULT_TEMPLATE;
 
 	/** @var bool */
-	private $chapters = TRUE;
+	private $chapters = true;
 
 
-	/**
-	 * Control constructor.
-	 * @param ITranslator|null $translator
-	 */
-	public function __construct(ITranslator $translator = NULL) {
-		parent::__construct($translator);
+	public function __construct() {
 		$this->setTemplateFile(self::$DEFAULT_TEMPLATE);
 	}
 
-	public function render() {
+	public function render(): void {
 		$this->getTemplate()->chapters = $this->chapters;
 
 		$this->getTemplate()->setTranslator($this->getTranslator());
@@ -45,14 +39,7 @@ class Control extends BaseControl {
 		$this->getTemplate()->render();
 	}
 
-	/**
-	 * @param IComponent  $component
-	 * @param string      $name
-	 * @param string|null $insertBefore
-	 * @return Control
-	 * @throws InvalidStateException
-	 */
-	public function addComponent(IComponent $component, $name, $insertBefore = NULL): self {
+	public function addComponent(IComponent $component, ?string $name, string $insertBefore = null): self {
 		throw new InvalidStateException('Cannot add custom components into the timeline');
 	}
 
@@ -61,27 +48,22 @@ class Control extends BaseControl {
 	 * @param Html|string|null $title
 	 * @return Entry
 	 */
-	public function addEntry(DateTime $time, $title = NULL): Entry {
-		$entry = new Entry($this->getTranslator(), $time);
+	public function addEntry(DateTime $time, $title = null): Entry {
+		$entry = new Entry($time);
 		$entry->setTitle($title);
 		$i = 1;
 		do {
 			$name = "{$time->getTimestamp()}N{$i}";
 			$i++;
-		} while ($this->getComponent($name, FALSE) !== NULL);
+		} while ($this->getComponent($name, false) !== null);
 
 		parent::addComponent($entry, $name);
 
 		return $entry;
 	}
 
-	/**
-	 * @param bool $show
-	 * @return Control
-	 */
-	public function showChapters(bool $show = TRUE): self {
+	public function showChapters(bool $show = true): self {
 		$this->chapters = $show;
-
 		return $this;
 	}
 

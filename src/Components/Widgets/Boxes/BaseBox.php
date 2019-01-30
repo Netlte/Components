@@ -4,40 +4,30 @@
 namespace Netlte\Components\Widgets\Boxes;
 
 use Netlte\Components\Widgets\BaseWidget;
-use Nette\Localization\ITranslator;
 
 
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 abstract class BaseBox extends BaseWidget {
 
 	/** @var string|null */
-	private $background = NULL;
+	private $background = null;
 
 	/** @var string|null */
-	private $icon = NULL;
+	private $icon = null;
 
 	/** @var string */
 	private $text;
 
-	/**
-	 * BaseBox constructor.
-	 * @param string           $text
-	 * @param string|NULL      $icon
-	 * @param string|NULL      $background
-	 * @param ITranslator|null $translator
-	 */
+
 	public function __construct(
 		string $text,
-		string $icon = NULL,
-		string $background = NULL,
-		ITranslator $translator = NULL
+		string $icon = null,
+		string $background = null
 	) {
-		parent::__construct($translator);
-
 		$this->text = $text;
 		$this->icon = $icon;
 		$this->background = $background;
@@ -50,54 +40,30 @@ abstract class BaseBox extends BaseWidget {
 		$this->getTemplate()->background = $this->getBackground();
 	}
 
-	/**
-	 * @return null|string
-	 */
 	public function getBackground(): ?string {
 		return $this->background;
 	}
 
-	/**
-	 * @param null|string $background
-	 * @return BaseBox
-	 */
-	public function setBackground($background): self {
+	public function setBackground(?string $background): self {
 		$this->background = $background;
-
 		return $this;
 	}
 
-	/**
-	 * @return null|string
-	 */
 	public function getIcon(): ?string {
 		return $this->icon;
 	}
 
-	/**
-	 * @param string|null $icon
-	 * @return BaseBox
-	 */
-	public function setIcon(string $icon = NULL): self {
+	public function setIcon(string $icon = null): self {
 		$this->icon = $icon;
-
 		return $this;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getText(): string {
 		return $this->text;
 	}
 
-	/**
-	 * @param string $text
-	 * @return BaseBox
-	 */
 	public function setText(string $text): self {
 		$this->text = $text;
-
 		return $this;
 	}
 

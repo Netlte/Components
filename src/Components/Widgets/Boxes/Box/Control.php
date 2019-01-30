@@ -3,16 +3,15 @@
 
 namespace Netlte\Components\Widgets\Boxes\Box;
 
-use Holabs\Utils\ArrayHash;
 use Netlte\Components\Widgets\BaseWidget;
-use Nette\Application\BadRequestException;
-use Nette\Localization\ITranslator;
+use Netlte\Exceptions\BadRequestException;
+use Nette\Utils\ArrayHash;
 
 
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 class Control extends BaseWidget {
 
@@ -24,7 +23,7 @@ class Control extends BaseWidget {
 	public static $DEFAULT_TEMPLATE = self::DEFAULT_TEMPLATE;
 
 	/** @var string|null */
-	private $title = NULL;
+	private $title = null;
 
 	/** @var string */
 	private $background = self::DEFAULT_BACKGROUND;
@@ -33,33 +32,33 @@ class Control extends BaseWidget {
 	private $tools;
 
 	/** @var bool */
-	private $solid = TRUE;
+	private $solid = true;
 
 	/** @var bool */
-	private $collabsed = FALSE;
+	private $collabsed = false;
 
 	/** @var bool */
-	private $collabsable = FALSE;
+	private $collabsable = false;
 
 	/** @var bool */
-	private $removable = FALSE;
+	private $removable = false;
 
 	/** @var bool */
-	private $overlay = FALSE;
+	private $overlay = false;
 
 	/** @var bool */
-	private $padding = TRUE;
+	private $padding = true;
 
 	/** @var bool */
-	private $border = TRUE;
+	private $border = true;
 
-	public function __construct(ITranslator $translator = NULL) {
-		parent::__construct($translator);
+	public function __construct() {
 		$this->setTemplateFile(self::$DEFAULT_TEMPLATE);
 		$this->tools = new ArrayHash();
 	}
 
-	public function render() {
+	public function render(): void {
+		parent::render();
 
 		$this->getTemplate()->title = $this->getTitle();
 		$this->getTemplate()->tools = $this->getTools();
@@ -74,61 +73,41 @@ class Control extends BaseWidget {
 		$this->getTemplate()->hasTools = $this->hasTools();
 		$this->getTemplate()->components = $this->getComponents();
 
-		parent::render();
 		$this->getTemplate()->render();
 	}
 
 	/**
-	 * @param string $tool
 	 * @throws BadRequestException
 	 */
 	public function handleTool(string $tool) {
 		$t = $this->getTool($tool);
-		if ($t === NULL) {
+		if ($t === null) {
 			throw new BadRequestException("Tool with name {$tool} not found");
 		}
 
 		$t->invokeClick();
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getBackground(): string {
 		return $this->background;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isCollabsed(): bool {
 		return $this->collabsed;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isCollabsable(): bool {
 		return $this->collabsable;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function hasPadding(): bool {
 		return $this->padding;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function hasBorder(): bool {
 		return $this->border;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function hasTools(): bool {
 		return (bool) $this->getTools()->count() || $this->isCollabsable() || $this->isRemovable();
 	}
@@ -136,22 +115,14 @@ class Control extends BaseWidget {
 	/**
 	 * @return ArrayHash|Tool[]
 	 */
-	public function getTools() {
+	public function getTools(): ArrayHash {
 		return $this->tools;
 	}
 
-	/**
-	 * @param string $name
-	 * @return Tool|null
-	 */
 	public function getTool(string $name): ?Tool {
-		return $this->getTools()->offsetGetExists($name);
+		return $this->getTools()->offsetExists($name) ? $this->getTools()->offsetGet($name) : null;
 	}
 
-	/**
-	 * @param string $name
-	 * @return Control
-	 */
 	public function removeTool(string $name): self {
 		if ($this->getTools()->offsetExists($name)) {
 			$this->getTools()->offsetUnset($name);
@@ -160,136 +131,71 @@ class Control extends BaseWidget {
 		return $this;
 	}
 
-	/**
-	 * @param string $name
-	 * @param string $icon
-	 * @return Tool
-	 */
-	public function addTool(string $name, string $icon) {
+	public function addTool(string $name, string $icon): Tool {
 		$tool = new Tool($icon);
 		$this->getTools()->offsetSet($name, $tool);
 		return $tool;
 	}
 
-	/**
-	 * @return string|null
-	 */
 	public function getTitle(): ?string {
 		return $this->title;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isSolid(): bool {
 		return $this->solid;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function isRemovable(): bool {
 		return $this->removable;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function hasOverlay(): bool {
 		return $this->overlay;
 	}
 
-	/**
-	 * @param string $background
-	 * @return Control
-	 */
-	public function setBackground(string $background = self::DEFAULT_BACKGROUND): Control {
+	public function setBackground(string $background = self::DEFAULT_BACKGROUND): self {
 		$this->background = $background;
-
 		return $this;
 	}
 
-	/**
-	 * @param bool $collabsed
-	 * @return Control
-	 */
-	public function setCollabsed(bool $collabsed = TRUE): Control {
+	public function setCollabsed(bool $collabsed = true): self {
 		$this->collabsed = $collabsed;
-
-		if ($collabsed) {
-			$this->setCollabsable();
-		}
-
+		$this->setCollabsable($collabsed ?: $this->isCollabsable());
 		return $this;
 	}
 
-	/**
-	 * @param bool $collabsable
-	 * @return Control
-	 */
-	public function setCollabsable(bool $collabsable = TRUE): Control {
+	public function setCollabsable(bool $collabsable = true): self {
 		$this->collabsable = $collabsable;
-
 		return $this;
 	}
 
-	/**
-	 * @param bool $padding
-	 * @return Control
-	 */
-	public function setPadding(bool $padding = TRUE): Control {
+	public function setPadding(bool $padding = true): self {
 		$this->padding = $padding;
-
 		return $this;
 	}
 
-	/**
-	 * @param bool $border
-	 * @return Control
-	 */
-	public function setBorder(bool $border = TRUE): Control {
+	public function setBorder(bool $border = true): self {
 		$this->border = $border;
-
 		return $this;
 	}
 
-	/**
-	 * @param string|null $title
-	 * @return Control
-	 */
-	public function setTitle(string $title = NULL): Control {
+	public function setTitle(string $title = null): self {
 		$this->title = $title;
-
 		return $this;
 	}
 
-	/**
-	 * @param bool $solid
-	 * @return Control
-	 */
-	public function setSolid(bool $solid = TRUE): Control {
+	public function setSolid(bool $solid = true): self {
 		$this->solid = $solid;
-
 		return $this;
 	}
 
-	/**
-	 * @param bool $removable
-	 * @return Control
-	 */
-	public function setRemovable(bool $removable = TRUE): Control {
+	public function setRemovable(bool $removable = true): self {
 		$this->removable = $removable;
-
 		return $this;
 	}
 
-	/**
-	 * @param bool $overlay
-	 * @return Control
-	 */
-	public function setOverlay(bool $overlay = TRUE): Control {
+	public function setOverlay(bool $overlay = true): self {
 		$this->overlay = $overlay;
-
 		return $this;
 	}
 

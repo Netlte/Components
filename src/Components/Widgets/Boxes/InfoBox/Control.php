@@ -5,13 +5,12 @@ namespace Netlte\Components\Widgets\Boxes\InfoBox;
 
 use Netlte\Components\Widgets\Boxes\BaseBox;
 use Nette\ArgumentOutOfRangeException;
-use Nette\Localization\ITranslator;
 
 
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 class Control extends BaseBox {
 
@@ -28,37 +27,24 @@ class Control extends BaseBox {
 	private $value = 0.0;
 
 	/** @var float|null */
-	private $progress = NULL;
+	private $progress = null;
 
 	/** @var string|null */
-	private $hint = NULL;
+	private $hint = null;
 
 	/** @var string|null */
-	private $link = NULL;
+	private $link = null;
 
-	/**
-	 * Control constructor.
-	 * @param string           $text
-	 * @param string|null      $icon
-	 * @param string|null      $background
-	 * @param float            $value
-	 * @param float|null       $progress
-	 * @param string|null      $hint
-	 * @param string|null      $link
-	 * @param ITranslator|null $translator
-	 */
 	public function __construct(
 		string $text,
-		string $icon = NULL,
-		string $background = NULL,
+		string $icon = null,
+		string $background = null,
 		float $value = 0.0,
-		float $progress = NULL,
-		string $hint = NULL,
-		string $link = NULL,
-		ITranslator $translator = NULL
+		float $progress = null,
+		string $hint = null,
+		string $link = null
 	) {
-		parent::__construct($text, $icon, $background, $translator);
-
+		parent::__construct($text, $icon, $background);
 		self::progressCheck($progress);
 
 		$this->setTemplateFile(self::$DEFAULT_TEMPLATE);
@@ -68,89 +54,60 @@ class Control extends BaseBox {
 		$this->link = $link;
 	}
 
-	public function render() {
+	/**
+	 * @throws \Nette\Application\UI\InvalidLinkException
+	 */
+	public function render(): void {
 		parent::render();
 		$this->getTemplate()->value = $this->getValue();
 		$this->getTemplate()->progress = $this->getProgress();
 		$this->getTemplate()->hint = $this->getHint();
-		$this->getTemplate()->link = $this->getLink() !== NULL ? $this->getPresenter()->link($this->getLink()) : NULL;
+		$this->getTemplate()->link = $this->getLink() !== null ? $this->getPresenter()->link($this->getLink()) : null;
 		$this->getTemplate()->render();
 	}
 
-	/**
-	 * @return float
-	 */
 	public function getValue(): float {
 		return $this->value;
 	}
 
-	/**
-	 * @param float $value
-	 * @return Control
-	 */
-	public function setValue(float $value): Control {
+	public function setValue(float $value): self {
 		$this->value = $value;
-
 		return $this;
 	}
 
-	/**
-	 * @return float|null
-	 */
 	public function getProgress(): ?float {
 		return $this->progress;
 	}
 
-	/**
-	 * @param float|null $progress
-	 * @return Control
-	 */
-	public function setProgress(float $progress = NULL): self {
+	public function setProgress(float $progress = null): self {
 		self::progressCheck($progress);
 		$this->progress = $progress;
-
 		return $this;
 	}
 
-	/**
-	 * @return null|string
-	 */
 	public function getHint(): ?string {
 		return $this->hint;
 	}
 
-	/**
-	 * @param null|string $hint
-	 * @return Control
-	 */
-	public function setHint(string $hint = NULL): self {
+	public function setHint(string $hint = null): self {
 		$this->hint = $hint;
-
 		return $this;
 	}
 
-	/**
-	 * @return null|string
-	 */
 	public function getLink(): ?string {
 		return $this->link;
 	}
 
-	/**
-	 * @param null|string $link
-	 * @return Control
-	 */
-	public function setLink(string $link = NULL): self {
+	public function setLink(string $link = null): self {
 		$this->link = $link;
-
 		return $this;
 	}
 
 	/**
-	 * @param float|null $progress
+	 * @throws ArgumentOutOfRangeException
 	 */
-	protected static function progressCheck(float $progress = NULL) {
-		if ($progress !== NULL && ($progress < self::PROGRESS_FROM || $progress > self::PROGRESS_TO)) {
+	protected static function progressCheck(float $progress = null) {
+		if ($progress !== null && ($progress < self::PROGRESS_FROM || $progress > self::PROGRESS_TO)) {
 			throw new ArgumentOutOfRangeException(
 				sprintf(
 					'Progress value should be between %f and %f, %f given',

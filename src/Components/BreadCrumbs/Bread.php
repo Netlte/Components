@@ -10,16 +10,10 @@ use Nette\Utils\ArrayList;
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 class Bread extends ArrayList {
 
-	/**
-	 * @param string $title
-	 * @param string $link
-	 * @param array  $args
-	 * @return Bread
-	 */
 	public function addBreadCrumb(string $title, string $link, array $args = []): self {
 		$this[] = new BreadCrumb($title, $link, $args);
 
@@ -30,7 +24,7 @@ class Bread extends ArrayList {
 	 * @param mixed $index
 	 * @param IBreadCrumb $value
 	 */
-	public function offsetSet($index, $value) {
+	public function offsetSet($index, $value): void {
 		self::check($value);
 		parent::offsetSet($index, $value);
 	}
@@ -44,24 +38,9 @@ class Bread extends ArrayList {
 	}
 
 	/**
-	 * @param mixed $index
-	 * @return bool
-	 */
-	public function offsetExists($index) {
-		return parent::offsetExists($index);
-	}
-
-	/**
-	 * @param mixed $index
-	 */
-	public function offsetUnset($index) {
-		parent::offsetUnset($index);
-	}
-
-	/**
 	 * @param IBreadCrumb
 	 */
-	public function prepend($value) {
+	public function prepend($value): void {
 		self::check($value);
 		parent::prepend($value);
 	}
@@ -70,7 +49,7 @@ class Bread extends ArrayList {
 	 * @param mixed $value
 	 * @throws InvalidArgumentException
 	 */
-	protected static function check($value) {
+	protected static function check($value): void {
 		if (!$value instanceof IBreadCrumb) {
 			throw new InvalidArgumentException("Argument must be instance of " . IBreadCrumb::class);
 		}

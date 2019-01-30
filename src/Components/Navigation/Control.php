@@ -3,13 +3,12 @@
 namespace Netlte\Components\Navigation;
 
 use Holabs\Navigation\IManager;
-use Holabs\UI\BaseControl;
-use Nette\Localization\ITranslator;
+use Netlte\Utils\UI\BaseControl;
 
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 class Control extends BaseControl {
 
@@ -21,26 +20,18 @@ class Control extends BaseControl {
 	/** @var IManager */
 	private $manager;
 
-	/**
-	 * @param IManager         $manager
-	 * @param ITranslator|null $translator
-	 */
-	public function __construct(IManager $manager, ITranslator $translator = NULL) {
-		parent::__construct($translator);
+	public function __construct(IManager $manager) {
 		$this->setTemplateFile(self::$DEFAULT_TEMPLATE);
 		$this->manager = $manager;
 	}
 
-	public function render() {
+	public function render(): void {
 		$this->getTemplate()->sections = $this->manager->getSections();
 		$this->getTemplate()->setTranslator($this->getTranslator());
 		$this->getTemplate()->setFile($this->getTemplateFile());
 		$this->getTemplate()->render();
 	}
 
-	/**
-	 * @return IManager
-	 */
 	public function getManager(): IManager {
 		return $this->manager;
 	}

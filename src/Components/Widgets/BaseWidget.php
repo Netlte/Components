@@ -3,17 +3,18 @@
 
 namespace Netlte\Components\Widgets;
 
-use Holabs\UI\BaseControl;
 
+
+use Netlte\Utils\UI\BaseControl;
 
 /**
  * @author       Tomáš Holan <mail@tomasholan.eu>
  * @package      netlte/components
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2019, Tomáš Holan [www.tomasholan.eu]
  */
 abstract class BaseWidget extends BaseControl {
 
-	public function render(){
+	public function render(): void {
 		$this->getTemplate()->setTranslator($this->getTranslator());
 		$this->getTemplate()->setFile($this->getTemplateFile());
 	}
