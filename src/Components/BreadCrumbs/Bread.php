@@ -33,7 +33,7 @@ class Bread extends ArrayList {
 	 * @param mixed $index
 	 * @return IBreadCrumb
 	 */
-	public function offsetGet($index): void {
+	public function offsetGet($index) {
 		return parent::offsetGet($index);
 	}
 
