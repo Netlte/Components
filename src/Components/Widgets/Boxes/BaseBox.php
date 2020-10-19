@@ -33,7 +33,7 @@ abstract class BaseBox extends BaseWidget {
 		$this->background = $background;
 	}
 
-	public function render() {
+	public function render(): void {
 		parent::render();
 		$this->getTemplate()->text = $this->getText();
 		$this->getTemplate()->icon = $this->getIcon();
