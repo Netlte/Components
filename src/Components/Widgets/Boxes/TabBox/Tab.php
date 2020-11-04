@@ -19,6 +19,12 @@ class Tab extends BaseContainer implements ITab {
 	public function __construct(string $label) {
 		$this->label = $label;
 	}
+	
+	public function render(): void {
+		foreach ($this->getComponents() as $component) {
+			$component->render();
+		}
+	}
 
 	public function getLabel(): string {
 		return $this->label;
